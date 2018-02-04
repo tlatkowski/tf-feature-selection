@@ -3,7 +3,7 @@ from utils.statistics import pearson_correlation
 import numpy as np
 
 
-class PearsonTest(tf.test.TestCase):
+class TestPearson(tf.test.TestCase):
 
     def testPearsonCoefficientValueForTwoVectors(self):
         with self.test_session() as test_session:

@@ -1,9 +1,10 @@
-import tensorflow as tf
-from methods.selection import fisher
 import numpy as np
+import tensorflow as tf
+
+from methods.selection import fisher
 
 
-class FisherSelectionTest(tf.test.TestCase):
+class TestFisherSelection(tf.test.TestCase):
 
     def testFisherCorrectScore(self):
         with self.test_session() as test_session:
