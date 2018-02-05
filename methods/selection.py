@@ -1,6 +1,21 @@
 import tensorflow as tf
 
 
+def selection_wrapper(data, num_instances, selection_method=None, num_features=None):
+    if data is None:
+        raise ValueError('Provide data to make selection.')
+
+    if selection_method is None:
+        raise ValueError('Provide selection method.')
+
+    if num_features is None:
+        data = tf.convert_to_tensor(data)
+        num_features = data.get_shape().as_list()[-1]
+
+    values, indices = selection_method(data, num_instances, num_features)
+    return values, tf.gather(data, indices, axis=1)
+
+
 def fisher(data, num_instances: list, top_k_features=2):
     """
     Performs Fisher feature selection method according to the following formula:
@@ -20,9 +35,7 @@ def fisher(data, num_instances: list, top_k_features=2):
     mean1, std1 = tf.nn.moments(class1, axes=0)
     mean2, std2 = tf.nn.moments(class2, axes=0)
     fisher_coeffs = tf.abs(mean1 - mean2) / (std1 + std2)
-    values, indices = tf.nn.top_k(fisher_coeffs, k=top_k_features)
-    most_sig_f = tf.gather(data, indices, axis=1)
-    return most_sig_f
+    return tf.nn.top_k(fisher_coeffs, k=top_k_features)
 
 
 def feature_correlation_with_class(data, num_instances: list, top_k_features=10):
