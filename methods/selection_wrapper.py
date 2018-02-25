@@ -14,5 +14,8 @@ class SelectionWrapper:
             data = tf.convert_to_tensor(data)
             num_features = data.get_shape().as_list()[-1]
 
-        self.values, indices = selection_method(data, num_instances, num_features)
-        self.selected_features = tf.gather(data, indices, axis=1)
+        self.values, self.indices = selection_method(data, num_instances, num_features)
+        self.selected_data = tf.gather(data, self.indices, axis=1)
+
+    def select(self, data):
+        return tf.gather(data, self.indices, axis=1)
