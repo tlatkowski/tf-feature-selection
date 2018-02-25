@@ -1,6 +1,7 @@
-import tensorflow as tf
-from utils.statistics import pearson_correlation
 import numpy as np
+import tensorflow as tf
+
+from utils.statistics import pearson_correlation
 
 
 class TestPearson(tf.test.TestCase):

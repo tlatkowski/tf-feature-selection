@@ -9,7 +9,7 @@ def pearson_correlation(x1, x2):
     l = tf.reduce_sum((x1 - m1) * (x2 - m2))
     i = tf.reduce_sum((x1 - m1) ** 2) * tf.reduce_sum((x2 - m2) ** 2)
     p = tf.sqrt(i)
-    return l/p
+    return l / p
 
 
 def f_test():

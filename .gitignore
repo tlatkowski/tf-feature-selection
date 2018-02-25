@@ -102,3 +102,4 @@ ENV/
 
 logs
 .idea/
+.pytest_cache/
