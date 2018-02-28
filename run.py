@@ -4,6 +4,7 @@ from argparse import ArgumentParser
 import tensorflow as tf
 from tqdm import tqdm
 
+from experiments.classifier import NeuralNetworkClassifier
 from experiments.dataset import Dataset
 from experiments.experiment import Experiment
 from utils.log_saver import LogSaver
@@ -11,7 +12,6 @@ from utils.log_saver import LogSaver
 
 def run_experiment(experiment_config):
     dataset = Dataset('data/autism.tsv')
-
     num_epochs = 1000
     eval_every = 10
 
@@ -25,7 +25,7 @@ def run_experiment(experiment_config):
 
         with tf.Graph().as_default() as graph:
 
-            experiment = Experiment(experiment_config, num_instances, None, data_train_fold)
+            experiment = Experiment(experiment_config, num_instances, NeuralNetworkClassifier, data_train_fold)
 
             with tf.Session() as session:
 
@@ -64,7 +64,7 @@ def main():
 
     args = parser.parse_args()
     experiment_config = configparser.ConfigParser()
-    experiment_config.read('config/{}.ini'.format(args.experiment))
+    experiment_config.read('config/experiments/{}.ini'.format(args.experiment))
 
     run_experiment(experiment_config)
 

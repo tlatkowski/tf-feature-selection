@@ -14,10 +14,11 @@ methods = {
 
 class Experiment:
 
-    def __init__(self, experiment_config, num_features, num_instances, classifier, dataset):
+    def __init__(self, experiment_config, num_instances, classifier, dataset):
 
         selection_method = methods[experiment_config['SELECTION']['method']]
-        num_features = experiment_config['SELECTION']['num_features']
+        num_features = int(experiment_config['SELECTION']['num_features'])
+        hidden_sizes = int(experiment_config['CLASSIFIER']['hidden_sizes'])
 
         with tf.name_scope('selection'):
             self.selection_wrapper = SelectionWrapper(dataset,
@@ -26,4 +27,4 @@ class Experiment:
                                                       num_features=num_features)
 
         with tf.name_scope('classifier'):
-            self.clf = NeuralNetworkClassifier(num_features, 20)
+            self.clf = classifier(num_features, hidden_sizes)
