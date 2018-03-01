@@ -12,5 +12,33 @@ def pearson_correlation(x1, x2):
     return l / p
 
 
-def f_test():
-    pass
+def f_test(data, num_instances):
+    """
+    Performs F-statistic between the genes and the classification variable h
+    as the score of maximum relevance.
+
+    :param data:
+    :param num_instances:
+    :return:
+    """
+
+    data = tf.convert_to_tensor(data)
+    class1, class2 = tf.split(data, num_instances)
+    K = 2
+    with tf.name_scope('f_statistic'):
+        mean1, var1 = tf.nn.moments(class1, axes=0)
+        mean2, var2 = tf.nn.moments(class2, axes=0)
+        mean, var = tf.nn.moments(data, axes=0)
+
+        pooled_var = pooled_variance(data, num_instances)
+        tf.reduce_sum(((mean1 - mean) + (mean2 - mean))/(K-1))/pooled_var
+
+
+def pooled_variance(data, num_instances):
+    K = len(num_instances)
+    n = sum(num_instances)
+
+    class1, class2 = tf.split(data, num_instances)
+    mean1, var1 = tf.nn.moments(class1, axes=0)
+    mean2, var2 = tf.nn.moments(class2, axes=0)
+    return -1

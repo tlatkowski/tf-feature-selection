@@ -1,8 +1,7 @@
 import tensorflow as tf
 
-from experiments.classifier import NeuralNetworkClassifier
-from methods.selection_wrapper import SelectionWrapper
 from methods.selection import fisher, feature_correlation_with_class, t_test, random
+from methods.selection_wrapper import SelectionWrapper
 
 methods = {
     'fisher': fisher,
@@ -15,7 +14,6 @@ methods = {
 class Experiment:
 
     def __init__(self, experiment_config, num_instances, classifier, dataset):
-
         selection_method = methods[experiment_config['SELECTION']['method']]
         num_features = int(experiment_config['SELECTION']['num_features'])
         hidden_sizes = int(experiment_config['CLASSIFIER']['hidden_sizes'])

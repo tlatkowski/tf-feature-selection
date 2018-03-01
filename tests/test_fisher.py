@@ -1,7 +1,8 @@
 import numpy as np
 import tensorflow as tf
 
-from methods.selection import fisher, selection_wrapper
+from methods.selection import fisher
+from methods.selection_wrapper import SelectionWrapper
 
 
 class TestFisherSelection(tf.test.TestCase):
@@ -28,10 +29,11 @@ class TestFisherSelection(tf.test.TestCase):
 
             num_instances = [2, 2]
             top_k = 1
-            _, actual_most_significant_features = test_session.run(selection_wrapper(data,
-                                                                                     num_instances,
-                                                                                     fisher,
-                                                                                     num_features=top_k))
+            selection_wrapper = SelectionWrapper(data,
+                                                 num_instances,
+                                                 fisher,
+                                                 num_features=top_k)
+            actual_most_significant_features = test_session.run(selection_wrapper.selected_data)
             correct_most_significant_features = [[2.], [4.], [6.], [6.]]
 
             self.assertAllEqual(actual_most_significant_features, correct_most_significant_features)
