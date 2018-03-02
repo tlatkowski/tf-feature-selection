@@ -37,8 +37,14 @@ def f_test(data, num_instances):
 def pooled_variance(data, num_instances):
     K = len(num_instances)
     n = sum(num_instances)
+    data = tf.convert_to_tensor(data, dtype=tf.float32)
+    split_classes = tf.split(data, num_instances)
+    vars = []
+    for i in range(len(split_classes)):
+        _, var = tf.nn.moments(split_classes[i], axes=0)
+        vars.append(var)
 
-    class1, class2 = tf.split(data, num_instances)
-    mean1, var1 = tf.nn.moments(class1, axes=0)
-    mean2, var2 = tf.nn.moments(class2, axes=0)
-    return -1
+    n_k = tf.to_float(tf.reshape(num_instances, [K, -1]))
+    stacked_var = tf.stack(vars)
+    pooled_var = tf.reduce_sum(stacked_var * (n_k - 1), axis=0) / (n - K)
+    return pooled_var
